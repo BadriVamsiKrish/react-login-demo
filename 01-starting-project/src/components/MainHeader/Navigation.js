@@ -20,7 +20,7 @@ const Navigation = (props) => {
         )}
         {cxt.isLoggedIn && (
           <li>
-            <button onClick={props.onLogout}>Logout</button>
+            <button onClick={cxt.onLogout}>Logout</button>
           </li>
         )}
       </ul>
