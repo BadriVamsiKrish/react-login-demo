@@ -26,8 +26,6 @@ const passwordReducer = (state, action) => {
 
 const Login = (props) => {
 
-  const [enteredClgName, setEnteredClgName] = useState('');
-  const [clgNameIsValid, setClgNameIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
@@ -68,9 +66,7 @@ const Login = (props) => {
       (emailState.isValid && event.target.value.trim().length > 6)
     );
   };
-  const clgNameChangeHandler = (event) => {
-    setEnteredClgName(event.target.value);
-  }
+  
 
   const validateEmailHandler = () => {
     dispatchEmail({ type: 'INPUT_BLUR' })
@@ -78,13 +74,11 @@ const Login = (props) => {
   const validatePasswordHandler = () => {
     dispatchPassword({ type: 'INPUT_BLUR' })
   };
-  const validateClgNameHandler = () => {
-    setClgNameIsValid(enteredClgName.trim().length > 0);
-  }
+
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLogin(emailState.value, passwordState.value, enteredClgName);
+    props.onLogin(emailState.value, passwordState.value);
   };
 
   return (
@@ -114,19 +108,6 @@ const Login = (props) => {
             value={passwordState.value}
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
-          />
-        </div>
-        <div
-          className={`${classes.control} ${clgNameIsValid === false ? classes.invalid : ''
-            }`}
-        >
-          <label htmlFor='v=clg'>College Name</label>
-          <input
-            type='text'
-            id='clgName'
-            value={enteredClgName}
-            onChange={clgNameChangeHandler}
-            onBlur={validateClgNameHandler}
           />
         </div>
         <div className={classes.actions}>
@@ -173,4 +154,33 @@ action -- dispatch function / new state which has to be rendered
 
 How does dispatch actions work.
 --> when we update the value or validity, we have to dispatch the action.
+*/
+
+
+/*
+--->contect api
+When would you use useState and when would you use useReducer. Its important to know this. Reducers are favourite interview question.
+--> when there are complex state update we use 'useReducer', and when there are simple state updates we use 'usestates'.
+
+What is the problem we are trying to solve here?
+--> Here, since we can't access directly to the sibling components and accessing to them is a complex procedure since,
+ we have to call each component using props through parent component, we are using context api tool to solve this problem.
+
+ What is prop chain and what is the problem that it has?
+--> The process of accessing components using props in each component is called as "prop chain". It is a complex task.
+
+What is prop chain and what is the problem that it has?
+--> We use context api tool in React, to solve the problem more effectively.
+
+Please write down the steps involved to add the Login context
+---> create a folder(store) --> 
+add file(auth-context.js)--> create a variable(AuthContext) with React.createContext({loggedIn: false}) which will be the object used in context.
+--> Go to App.js wrap the elements inside the AuthContext.Provider element, now pass the value attribute inside it which acts as Provider.
+--> Now in navigation component wrap the elements indside AuthContext.Consumer element, which envokes the values from provider file.
+
+How do we consume the context API
+--> In consumer component it consumes the content from the provider and returns the values to inside elements.
+
+What do you think about context API. When would you use it
+--> context API creates the accessability b/w the components very simple.
 */
